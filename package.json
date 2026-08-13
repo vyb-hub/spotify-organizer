@@ -1,0 +1,19 @@
+{
+  "name": "spotify-organizer",
+  "version": "2.0.0",
+  "description": "CLI for organizing a Spotify library into genre/mood playlists. Classification is done by Claude conversationally (via Claude Code) — no LLM API key or billing required.",
+  "main": "cli.js",
+  "type": "commonjs",
+  "bin": {
+    "spotify-organizer": "cli.js"
+  },
+  "scripts": {
+    "login": "node cli.js login",
+    "fetch-liked": "node cli.js fetch-liked",
+    "create-playlists": "node cli.js create-playlists",
+    "test": "node test/run.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
