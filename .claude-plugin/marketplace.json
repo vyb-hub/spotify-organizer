@@ -1,0 +1,15 @@
+{
+  "name": "vyb-plugins",
+  "owner": {
+    "name": "vyb-hub",
+    "url": "https://github.com/vyb-hub"
+  },
+  "description": "Plugins by vyb-hub.",
+  "plugins": [
+    {
+      "name": "spotify-organizer",
+      "source": "./claude-skill",
+      "description": "Organize your Spotify Liked Songs into genre and mood playlists, with Claude doing the classification (no LLM API key needed)."
+    }
+  ]
+}

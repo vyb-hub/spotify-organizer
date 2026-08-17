@@ -17,15 +17,19 @@ from.
 
 ## Step 0 — locate this skill's own directory
 
-Before running anything, find where this skill is actually installed on disk (it could be a
-personal skill at `~/.claude/skills/organize-spotify/`, or a project-scoped one at
-`<project>/.claude/skills/organize-spotify/`). One reliable way:
+Before running anything, find where this skill actually lives on disk. It may have been
+installed as a plugin, copied in as a personal skill, or checked out inside a project, so
+search all the usual places and take the first hit:
 ```
-find ~/.claude/skills -maxdepth 1 -iname organize-spotify 2>/dev/null
-find "$(git rev-parse --show-toplevel 2>/dev/null || pwd)/.claude/skills" -maxdepth 1 -iname organize-spotify 2>/dev/null
+find ~/.claude/plugins ~/.claude/skills "$(pwd)/.claude/skills" \
+     -maxdepth 6 -type d -name organize-spotify 2>/dev/null | head -1
 ```
-Whichever one exists, treat it as `$SKILL_DIR` — every command below runs with
-`$SKILL_DIR/scripts` as the working directory (`cd "$SKILL_DIR/scripts"` first).
+Sanity-check the result actually contains `scripts/cli.js`. Treat it as `$SKILL_DIR` — every
+command below runs from `$SKILL_DIR/scripts` (`cd "$SKILL_DIR/scripts"` first).
+
+If it was installed as a plugin, `$SKILL_DIR` sits inside Claude Code's plugin cache. That's
+fine — the setup files (`.env`, `.token.json`) live there and persist across sessions — but
+mention the path to the user once, since they'll need to edit `.env` there in Step 1.
 
 ## Step 1 — one-time setup check
 

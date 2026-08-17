@@ -9,19 +9,24 @@ Code session, using your existing subscription.
 
 ## Install
 
-Copy this whole `organize-spotify/` folder into either:
+### Option 1 — as a plugin (recommended, no cloning)
+From inside Claude Code:
+```
+/plugin marketplace add vyb-hub/spotify-organizer
+/plugin install spotify-organizer@vyb-plugins
+```
 
-- **Personal, works in every project:** `~/.claude/skills/organize-spotify/`
-- **One specific project only:** `<that project>/.claude/skills/organize-spotify/`
-
+### Option 2 — copy the folder in manually
 ```bash
 mkdir -p ~/.claude/skills
 cp -r organize-spotify ~/.claude/skills/
 ```
+(Use `<project>/.claude/skills/` instead if you only want it in one project.)
 
-Then, one-time setup inside the installed copy:
+### Then, one-time setup
+Ask Claude to organize your Spotify library — it will locate its own `scripts/` folder and
+tell you the exact path. In that folder:
 ```bash
-cd ~/.claude/skills/organize-spotify/scripts
 cp .env.example .env
 # edit .env: fill in SPOTIFY_CLIENT_ID / SPOTIFY_CLIENT_SECRET
 #   from a free app at https://developer.spotify.com/dashboard

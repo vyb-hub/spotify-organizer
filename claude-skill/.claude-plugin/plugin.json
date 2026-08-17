@@ -1,0 +1,11 @@
+{
+  "name": "spotify-organizer",
+  "description": "Organize your Spotify Liked Songs into genre and mood playlists. Claude does the genre/mood classification itself, so no LLM API key or per-track billing is involved.",
+  "version": "1.0.0",
+  "author": {
+    "name": "vyb-hub",
+    "url": "https://github.com/vyb-hub"
+  },
+  "homepage": "https://github.com/vyb-hub/spotify-organizer",
+  "keywords": ["spotify", "music", "playlists", "organization"]
+}

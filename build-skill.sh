@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Regenerates the portable Claude Skill package (claude-skill/organize-spotify/scripts/)
-# from the canonical CLI source (cli.js, src/) at the repo root. Run this after changing
-# cli.js or anything in src/, so the two variants don't drift apart.
+# Regenerates the vendored CLI inside the plugin/skill package from the canonical source
+# (cli.js, src/) at the repo root. Run this after changing cli.js or anything in src/, so the
+# standalone CLI and the installable skill don't drift apart.
 set -euo pipefail
 cd "$(dirname "$0")"
 
-DEST="claude-skill/organize-spotify/scripts"
+DEST="claude-skill/skills/organize-spotify/scripts"
 rm -rf "$DEST"
 mkdir -p "$DEST"
 

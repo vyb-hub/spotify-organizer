@@ -6,15 +6,15 @@ Claude Code session, covered by your existing Claude subscription — not a sepa
 
 There are two ways to get this, depending on what you want:
 
-| | **Standalone repo** (this folder) | **Claude Skill** (`claude-skill/organize-spotify/`) |
+| | **Standalone repo** (this folder) | **Claude Code plugin** (`claude-skill/`) |
 |---|---|---|
-| What it is | This whole project — CLI + an in-repo skill | A portable, self-contained skill package |
+| What it is | This whole project — CLI + an in-repo skill | An installable plugin containing the skill |
 | Where it works | Only when this repo is open in Claude Code, or run by hand | Any project, any directory, once installed |
-| Best for | Developing/testing this, or running the CLI yourself without Claude | Handing to a friend who just wants to say "organize my Spotify" from anywhere |
-| Setup | `npm install` here | Copy the skill folder into `~/.claude/skills/`, `npm install` inside its `scripts/` |
+| Best for | Developing/testing this, or running the CLI yourself | Anyone who just wants to say "organize my Spotify" from anywhere |
+| Setup | Clone + `npm install` here | `/plugin marketplace add vyb-hub/spotify-organizer` |
 
-Both variants share the exact same underlying code — `claude-skill/organize-spotify/scripts/`
-is a vendored copy of this repo's `cli.js` + `src/`, kept in sync via `./build-skill.sh`.
+Both variants share the exact same underlying code — `claude-skill/skills/organize-spotify/scripts/`
+contains a vendored copy of this repo's `cli.js` + `src/`, kept in sync via `./build-skill.sh`.
 
 ## What it does
 1. Log in with Spotify once (OAuth via your browser — your credentials go to Spotify's login
@@ -56,17 +56,18 @@ node cli.js fetch-liked              # writes liked.json
 node cli.js create-playlists tagged.json --liked liked.json --min 10 --public --remove-duplicates
 ```
 
-## Option B: install the portable Claude Skill
+## Option B: install as a Claude Code plugin (easiest to share)
 
-See [`claude-skill/organize-spotify/README.md`](claude-skill/organize-spotify/README.md) for
-full instructions. Short version:
-```bash
-cp -r claude-skill/organize-spotify ~/.claude/skills/
-cd ~/.claude/skills/organize-spotify/scripts
-cp .env.example .env   # fill in your Spotify Client ID/Secret
-npm install
+No cloning, no zip. From inside Claude Code:
 ```
-Then, from any Claude Code session, in any directory: *"organize my Spotify library."*
+/plugin marketplace add vyb-hub/spotify-organizer
+/plugin install spotify-organizer@vyb-plugins
+```
+Then, from any Claude Code session in any directory: *"organize my Spotify library."*
+Claude walks you through the one-time Spotify setup on first run.
+
+Full details, plus a manual copy-the-folder alternative, in
+[`claude-skill/skills/organize-spotify/README.md`](claude-skill/skills/organize-spotify/README.md).
 
 ## Testing
 ```bash
@@ -77,17 +78,19 @@ every error path (missing/malformed files, expired/revoked login, 403s, empty re
 against a local mock Spotify server — no real account or network access to Spotify needed.
 
 ## Sharing this with a friend
-They need: their own Spotify Developer app (or be added as a user on yours), their own Claude
-subscription with Claude Code, and either this repo or just the `claude-skill/organize-spotify`
-folder. No hosting, no shared credentials, no API billing on your side — everything runs
-locally against their own Spotify account.
+Easiest: send them the two `/plugin` commands in Option B above — nothing to clone or unzip.
+
+They'll need their own free Spotify Developer app (or you add their Spotify account email to
+yours under "User Management") and their own Claude subscription. No hosting, no shared
+credentials, no API billing on your side — everything runs locally against their own Spotify
+account.
 
 ## Maintainers: keeping both variants in sync
 If you change `cli.js` or anything in `src/`, re-run:
 ```bash
 ./build-skill.sh
 ```
-This re-vendors the CLI into `claude-skill/organize-spotify/scripts/` so the skill package
+This re-vendors the CLI into `claude-skill/skills/organize-spotify/scripts/` so the skill package
 doesn't drift from the standalone version.
 
 ## Notes
