@@ -3,7 +3,7 @@ require("dotenv").config();
 const http = require("http");
 const crypto = require("crypto");
 const fs = require("fs");
-const { execFile } = require("child_process");
+const { execFile, spawn } = require("child_process");
 const { URL } = require("url");
 
 const {
@@ -26,10 +26,27 @@ const ui = require("./src/ui");
 
 function openBrowser(target) {
   if (process.env.SPOTIFY_ORGANIZER_NO_OPEN) return; // set by tests
-  const opener =
-    process.platform === "darwin" ? "open" : process.platform === "win32" ? "start" : "xdg-open";
+  const cantOpen = () =>
+    ui.warn(`Couldn't open your browser automatically — open this yourself:\n    ${target}`);
+
+  if (process.platform === "win32") {
+    // `start` is a cmd.exe builtin, not an executable, so it can't be exec'd directly.
+    // The empty "" is start's window-title argument; quoting the URL keeps cmd from
+    // treating the & separators in the OAuth query string as command separators.
+    // windowsVerbatimArguments stops Node re-escaping the quotes we just added.
+    const child = spawn("cmd.exe", ["/c", "start", '""', `"${target}"`], {
+      windowsVerbatimArguments: true,
+      detached: true,
+      stdio: "ignore",
+    });
+    child.on("error", cantOpen);
+    child.unref();
+    return;
+  }
+
+  const opener = process.platform === "darwin" ? "open" : "xdg-open";
   execFile(opener, [target], (err) => {
-    if (err) ui.warn(`Couldn't open your browser automatically — open this yourself:\n    ${target}`);
+    if (err) cantOpen();
   });
 }
 
